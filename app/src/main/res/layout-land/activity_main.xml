@@ -10,12 +10,6 @@
     android:layout_margin="20dp"
     >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/loginlogo"
-        />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,14 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Agree and Continue"
-        android:textColor="@color/blue"
         android:textSize="23dp"
-        android:onClick="agreeClick"
-        android:textStyle="bold" />
+        android:textColor="#65AEFF"
+        android:textStyle="bold"
+        />
 
 </LinearLayout>
