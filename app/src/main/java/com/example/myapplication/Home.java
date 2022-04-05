@@ -9,20 +9,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class Home extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener(){
-
+        bottomNavigationView.setSelectedItemId(R.id.itemHome);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -38,14 +38,11 @@ public class Home extends AppCompatActivity {
                         person.setVisibility(View.GONE);
                         message.setVisibility(View.VISIBLE);
                         return true;
-
                 }
                 return true;
             }
         });
     }
-
-
 
 
     @Override
@@ -56,4 +53,8 @@ public class Home extends AppCompatActivity {
     }
 
 
+    public void messageClick(View view) {
+        Intent intent = new Intent(this, Message.class);
+        startActivity(intent);
+    }
 }

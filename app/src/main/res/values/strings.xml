@@ -4,4 +4,17 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!--    Message-->
+    <string name="messages">Messages</string>
+
+    <!--    Contact-->
+    <string name="contacts">Contacts</string>
+    <string name="channels">Channels</string>
+    <string name="groups">Groups</string>
+
+    <string name="searchYourContacts">Search your contacts ...</string>
+    <string name="searchMessages">Search messages ..."</string>
+    <string name="online">Online</string>
+    <string name="sortContactByLastSeen">Sorted by last seen</string>
 </resources>

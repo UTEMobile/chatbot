@@ -14,7 +14,7 @@
         android:layout_gravity="top"
         android:layout_marginBottom="70dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:text="Messages"
+                android:text="@string/messages"
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="Search messages ..." />
+                    android:text="@string/searchMessages"/>
             </LinearLayout>
 
 
@@ -212,6 +212,7 @@
             />
 
         <LinearLayout
+            android:onClick="messageClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -222,7 +223,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/thi"
+                android:src="@drawable/i3"
                 app:shapeAppearanceOverlay="@style/round35imageview" />
 
             <LinearLayout
@@ -235,7 +236,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans"
-                    android:text="Thi"
+                    android:text="Phuong"
 
                     android:textColor="@color/black"
                     android:textSize="20dp"
@@ -276,7 +277,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
 
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -289,7 +290,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:text="Contacts"
+                android:text="@string/contacts"
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
@@ -302,7 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Groups"
+                android:text="@string/groups"
                 android:textColor="#CACACA"
                 android:textSize="20dp" />
 
@@ -315,7 +316,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Channels"
+                android:text="@string/channels"
                 android:textColor="#CACACA"
                 android:textSize="20dp" />
 
@@ -353,7 +354,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="Search your contacts ..." />
+                    android:text="@string/searchYourContacts" />
             </LinearLayout>
 
 
@@ -369,7 +370,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:text="Sorted by last seen"
+                android:text="@string/sortContactByLastSeen"
                 android:textColor="#6584E4"
                 android:textSize="20dp" />
 
@@ -423,7 +424,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -456,7 +457,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -489,7 +490,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -522,7 +523,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -555,7 +556,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -588,7 +589,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -621,7 +622,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -654,7 +655,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -687,7 +688,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -720,7 +721,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -753,7 +754,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -786,7 +787,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -819,7 +820,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -852,7 +853,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -885,7 +886,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -918,7 +919,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Online" />
+                            android:text="@string/online" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -935,7 +936,9 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu">
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/bottom_nav_color"
+        >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
