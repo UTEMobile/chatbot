@@ -11,25 +11,30 @@
         android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".InCommingCall"
-            android:exported="true" >
+            android:exported="true">
+
         </activity>
         <activity
             android:name=".Message"
-            android:exported="true"></activity>
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".Home"
-            android:exported="true"></activity>
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".EnterYourPhoneNumber"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
