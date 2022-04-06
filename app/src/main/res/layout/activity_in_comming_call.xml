@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/i3" />
+        android:src="@drawable/i2"
+
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +30,9 @@
         android:layout_gravity="bottom|center"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,9 +45,8 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/end_call"
                 android:onClick="declineClick"
-                />
+                android:src="@drawable/end_call" />
 
             <Space
                 android:layout_width="0dp"
@@ -55,9 +58,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                >
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
