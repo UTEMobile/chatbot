@@ -147,7 +147,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/i3"
+                    android:src="@drawable/nhat"
                     app:shapeAppearanceOverlay="@style/round25imageview" />
 
                 <TextView

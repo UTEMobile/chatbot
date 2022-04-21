@@ -17,4 +17,10 @@
     <string name="searchMessages">Search messages ..."</string>
     <string name="online">Online</string>
     <string name="sortContactByLastSeen">Sorted by last seen</string>
+
+
+<!--    EnterYourPhoneNumberActivity-->
+    <string name="titlePhoneNumberActivity">Enter Your Phone Number</string>
+    <string name="sendSMSVerify">WhatsApp will send an SMS message to verify your phone number</string>
+    <string name="hintPhoneNumber">your phone number</string>
 </resources>

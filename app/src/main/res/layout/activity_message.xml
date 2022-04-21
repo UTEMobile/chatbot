@@ -35,7 +35,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/i3"
+                android:src="@drawable/nhat"
                 app:shapeAppearanceOverlay="@style/round25imageview" />
 
             <LinearLayout
@@ -243,7 +243,7 @@
                 android:layout_width="300dp"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/i2"
+                android:src="@drawable/nhat"
                 />
         </androidx.cardview.widget.CardView>
 

@@ -43,7 +43,7 @@ public class Message extends FragmentActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                zoomImageFromThumb(imageView, R.drawable.i2);
+                zoomImageFromThumb(imageView, R.drawable.nhat);
             }
         });
 

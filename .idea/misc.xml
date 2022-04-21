@@ -23,6 +23,15 @@
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/layout/activity_settings.xml" value="0.101953125" />
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/layout/activity_zoom_in.xml" value="0.153125" />
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/layout/activity_detail_person.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_enter_your_phone_number.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_in_comming_call.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_message.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/activity_otpactivity.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/item_receive.xml" value="0.1125" />
       </map>
     </option>
   </component>
