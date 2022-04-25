@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "513374260904",
+    "firebase_url": "https://chatsapp-7f084-default-rtdb.firebaseio.com",
+    "project_id": "chatsapp-7f084",
+    "storage_bucket": "chatsapp-7f084.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513374260904:android:04d1235659702a4250fc9d",
+        "android_client_info": {
+          "package_name": "com.example.chatsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513374260904-351j5iikfm0b4se5a8q5po623e444ph3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPqtBe5hzYrQV3yhtsnlUkxCs9uvveC58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513374260904-351j5iikfm0b4se5a8q5po623e444ph3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513374260904:android:d55e902d70b00af350fc9d",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513374260904-351j5iikfm0b4se5a8q5po623e444ph3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPqtBe5hzYrQV3yhtsnlUkxCs9uvveC58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513374260904-351j5iikfm0b4se5a8q5po623e444ph3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

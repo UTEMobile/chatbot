@@ -10,34 +10,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".OTPActivity"
+            android:name=".Activities.SetupProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.OTPActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
-            android:name=".DetailPerson"
+            android:name=".Activities.DetailPersonActivity"
             android:exported="false" />
         <activity
-            android:name=".InCommingCall"
-            android:exported="true"></activity>
-        <activity
-            android:name=".Message"
+            android:name=".Activities.InCommingCallActivity"
             android:exported="true" />
         <activity
-            android:name=".Home"
+            android:name=".Activities.MessageActivity"
             android:exported="true" />
         <activity
-            android:name=".EnterYourPhoneNumber"
+            android:name=".Activities.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".Settings"
+            android:name=".Activities.EnterYourPhoneNumberActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.SettingsActivity"
             android:exported="true" />
     </application>
 

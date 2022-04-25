@@ -19,7 +19,7 @@
     <string name="sortContactByLastSeen">Sorted by last seen</string>
 
 
-<!--    EnterYourPhoneNumberActivity-->
+    <!--    EnterYourPhoneNumberActivity-->
     <string name="titlePhoneNumberActivity">Enter Your Phone Number</string>
     <string name="sendSMSVerify">WhatsApp will send an SMS message to verify your phone number</string>
     <string name="hintPhoneNumber">your phone number</string>

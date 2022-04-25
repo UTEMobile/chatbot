@@ -10,6 +10,19 @@
         <entry key="..\:/LearnNewThing/AdroidCode/do-an-mobile/app/src/main/res/layout/activity_in_comming_call.xml" value="0.21739130434782608" />
         <entry key="..\:/LearnNewThing/AdroidCode/do-an-mobile/app/src/main/res/layout/activity_main.xml" value="0.21739130434782608" />
         <entry key="..\:/LearnNewThing/AdroidCode/do-an-mobile/app/src/main/res/layout/activity_message.xml" value="0.21739130434782608" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout-land/activity_main.xml" value="0.1728395061728395" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_enter_your_phone_number.xml" value="0.22" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_message.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_otpactivity.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/activity_setup_profile.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/item_receive.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/item_sent.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/layout/row_conversation.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/menu/menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Administrator/Desktop/do-an-mobile/app/src/main/res/menu/topmenu.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.103" />
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.103" />
         <entry key="..\:/Users/mattheu/Desktop/MyApplication/app/src/main/res/layout-land/activity_main.xml" value="0.19635416666666666" />
@@ -40,5 +53,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>

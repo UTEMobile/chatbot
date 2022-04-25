@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.OTPActivity">
+    tools:context=".Activities.SetupProfileActivity">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_telegram_app"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/telegram"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +21,8 @@
         android:id="@+id/verify_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verify "
+        android:layout_marginTop="50dp"
+        android:text="NICKNAME"
         android:textColor="@color/black"
 
         android:textSize="20dp"
@@ -28,32 +31,17 @@
         app:layout_constraintStart_toStartOf="@+id/image"
         app:layout_constraintTop_toBottomOf="@id/image" />
 
-
-    <com.mukesh.OtpView
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="72dp"
-        android:clickable="true"
-        android:inputType="number"
-        android:itemBackground="#E3E3E3"
-        app:OtpItemCount="6"
-        app:OtpLineColor="@color/black"
-        app:OtpViewType="line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/verify_text" />
-
     <androidx.cardview.widget.CardView
+
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText">
+        app:layout_constraintTop_toBottomOf="@id/verify_text"
+
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="309dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +50,20 @@
             android:orientation="vertical">
 
 
+            <EditText
+                android:id="@+id/phone_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textbox_outline"
+                android:ems="10"
+
+
+                android:hint="Type your name"
+                android:inputType="textPersonName"
+                android:padding="10dp" />
+
             <Button
+                android:id="@+id/continues_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

@@ -4,37 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_margin="20dp"
-    >
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Activities.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome to WhatsApp"
-        android:textSize="30dp"
-        android:textStyle="bold"
         android:textColor="@color/black"
-        />
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Read our Privacy Policy. Tap Agree and Continue to accept the Terms of Service"
-        />
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        />
+        android:text="Read our Privacy Policy. Tap Agree and Continue to accept the Terms of Service" />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:onClick="agreeClick"
         android:text="Agree and Continue"
-        android:textSize="23dp"
         android:textColor="#65AEFF"
+        android:textSize="23dp"
         android:textStyle="bold"
+
         />
 
 </LinearLayout>
