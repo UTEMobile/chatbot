@@ -2,6 +2,7 @@ package com.example.myapplication.Activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.myapplication.Adapters.MessagesAdapter;
 import com.example.myapplication.Models.Message;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMessageBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +39,11 @@ public class MessageActivity extends AppCompatActivity {
         binding = ActivityMessageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 //        setSupportActionBar(binding.toolbar);
+
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         messages = new ArrayList<>();
         adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
@@ -130,6 +137,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
     }
+
     //    @SuppressLint("MissingSuperCall")
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

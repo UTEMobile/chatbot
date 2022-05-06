@@ -85,8 +85,6 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Nullable
     @Override
     public CharSequence onCreateDescription() {
