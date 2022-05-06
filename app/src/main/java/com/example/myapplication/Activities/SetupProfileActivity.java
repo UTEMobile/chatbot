@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.myapplication.Models.User;
-import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivitySetupProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +26,7 @@ public class SetupProfileActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase database;
     FirebaseStorage storage;
+
 
     Uri selectedImage;
 
@@ -47,6 +47,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+//        Select a image
         binding.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +55,6 @@ public class SetupProfileActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, 45);
-
             }
         });
 

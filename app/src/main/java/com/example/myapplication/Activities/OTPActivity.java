@@ -3,6 +3,7 @@ package com.example.myapplication.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,12 +25,12 @@ import com.mukesh.OnOtpCompletionListener;
 import java.util.concurrent.TimeUnit;
 
 public class OTPActivity extends AppCompatActivity {
-
     private ActivityOtpactivityBinding binding;
     private String verificationId;
     private FirebaseAuth auth;
     private ProgressDialog dialog;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

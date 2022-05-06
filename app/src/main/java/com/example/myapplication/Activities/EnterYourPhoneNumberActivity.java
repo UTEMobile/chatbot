@@ -26,7 +26,7 @@ public class EnterYourPhoneNumberActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EnterYourPhoneNumberActivity.this, OTPActivity.class);
-                intent.putExtra("phoneNumber", binding.phoneNumber.getText().toString());
+                intent.putExtra("phoneNumber", binding.phoneNumber.getText().toString().trim());
                 startActivity(intent);
             }
         });
