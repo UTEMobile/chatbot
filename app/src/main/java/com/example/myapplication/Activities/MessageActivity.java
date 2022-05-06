@@ -2,6 +2,7 @@ package com.example.myapplication.Activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.myapplication.Adapters.MessagesAdapter;
 import com.example.myapplication.Models.Message;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMessageBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -38,6 +41,11 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 //        setSupportActionBar(binding.toolbar);
 
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         messages = new ArrayList<>();
         adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
 
@@ -49,7 +57,9 @@ public class MessageActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         String receiverUid = getIntent().getStringExtra("uid");
         String senderUid = FirebaseAuth.getInstance().getUid();
-        
+
+        binding.name.setText(name);
+
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
         database = FirebaseDatabase.getInstance();
@@ -118,8 +128,18 @@ public class MessageActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void unused) {
 //                                                Toast.makeText(MessageActivity.this, "Added!", Toast.LENGTH_SHORT).show();
+                                                HashMap<String, Object> lastMsgObj = new HashMap<>();
+                                                lastMsgObj.put("lastMsg", message.getMessage());
+                                                lastMsgObj.put("lastMsgTime", date.getTime());
+
+
+                                                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+                                                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+
                                             }
                                         });
+
                             }
                         });
 
@@ -130,6 +150,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
     }
+
     //    @SuppressLint("MissingSuperCall")
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
