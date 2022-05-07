@@ -63,8 +63,13 @@ public class MessageActivity extends AppCompatActivity {
         messages = new ArrayList<>();
         adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+
+
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
+
 
         database.getReference().child("chats")
                 .child(senderRoom)

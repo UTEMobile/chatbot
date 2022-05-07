@@ -18,6 +18,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityHomeBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,10 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
-
     ActivityHomeBinding binding;
     FirebaseDatabase database;
-
     ArrayList<User> users;
     UsersAdapter usersAdapter;
 
@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 users.clear();
                 int count = (int) snapshot.getChildrenCount();
-                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     User user = snapshot1.getValue(User.class);
                     users.add(user);
                 }
@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.search:
                 Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
                 break;
@@ -81,6 +81,13 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.setting:
                 Toast.makeText(this, "Setting clicked", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.logout:
+                logOut();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finishAffinity();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,15 +95,16 @@ public class HomeActivity extends AppCompatActivity {
     @Nullable
     @Override
     public CharSequence onCreateDescription() {
-
         return super.onCreateDescription();
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Yes. I knew
         getMenuInflater().inflate(R.menu.topmenu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    void logOut() {
+        FirebaseAuth.getInstance().signOut();
     }
 }
