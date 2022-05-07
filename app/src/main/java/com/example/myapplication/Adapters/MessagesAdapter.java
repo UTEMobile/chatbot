@@ -1,6 +1,7 @@
 package com.example.myapplication.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingDeque;
 
 public class MessagesAdapter extends RecyclerView.Adapter {
 
@@ -43,28 +45,24 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         if (viewType == ITEM_SENT) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_sent, parent, false);
             return new SentViewHolder(view);
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.item_receive, parent, false);
-            return new ReceiverHolder(view);
+            return new ReceiverViewHolder(view);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         Message message = messages.get(position);
-//        CHECK AUTH and get ID of sender.
-        if (FirebaseAuth.getInstance().getUid().equals(message.getSenderId())) {
+        if(FirebaseAuth.getInstance().getUid().equals(message.getSenderId())) {
             return ITEM_SENT;
         } else {
             return ITEM_RECEIVE;
         }
-
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -88,7 +86,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
                 viewHolder.binding.feeling.setImageResource(reactions[pos]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
-                ReceiverHolder viewHolder = (ReceiverHolder) holder;
+                ReceiverViewHolder viewHolder = (ReceiverViewHolder) holder;
                 viewHolder.binding.feeling.setImageResource(reactions[pos]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             }
@@ -101,6 +99,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
                     .child("messages")
                     .child(message.getMessageId())
                     .setValue(message);
+
             FirebaseDatabase.getInstance().getReference()
                     .child("chats")
                     .child(receiverRoom)
@@ -113,6 +112,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
         if (holder.getClass() == SentViewHolder.class) {
             SentViewHolder viewHolder = (SentViewHolder) holder;
+
             viewHolder.binding.message.setText(message.getMessage());
 
             if (message.getFeeling()>=0){
@@ -123,18 +123,14 @@ public class MessagesAdapter extends RecyclerView.Adapter {
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
 
-//            viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View view, MotionEvent motionEvent) {
-//                    popup.onTouch(view, motionEvent);
-//                    return false;
-//                }
-//            });
-
         } else {
 
-            ReceiverHolder viewHolder = (ReceiverHolder) holder;
+            ReceiverViewHolder viewHolder = (ReceiverViewHolder) holder;
+
             viewHolder.binding.message.setText(message.getMessage());
+
+            Log.d("123456", message.getMessage());
+
             viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -167,10 +163,10 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ReceiverHolder extends RecyclerView.ViewHolder {
+    public class ReceiverViewHolder extends RecyclerView.ViewHolder {
         ItemReceiveBinding binding;
 
-        public ReceiverHolder(@NonNull View itemView) {
+        public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemReceiveBinding.bind(itemView);
         }
