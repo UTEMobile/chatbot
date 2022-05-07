@@ -46,11 +46,7 @@ public class MessageActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        messages = new ArrayList<>();
-        adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
 
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(adapter);
 
 
 
@@ -63,21 +59,29 @@ public class MessageActivity extends AppCompatActivity {
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
         database = FirebaseDatabase.getInstance();
-        database.getReference().child("chats").child(senderRoom)
+
+        messages = new ArrayList<>();
+        adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(adapter);
+
+        database.getReference().child("chats")
+                .child(senderRoom)
                 .child("messages")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messages.clear();
-
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                             Message message = snapshot1.getValue(Message.class);
-
                             message.setMessageId(snapshot1.getKey());
                             messages.add(message);
                         }
 
                         adapter.notifyDataSetChanged();
+
+                        Log.d("123456", Integer.toString(messages.size()));
                     }
 
                     @Override
@@ -111,6 +115,14 @@ public class MessageActivity extends AppCompatActivity {
 
                 String randomKey = database.getReference().push().getKey();
 
+                HashMap<String, Object> lastMsgObj = new HashMap<>();
+                lastMsgObj.put("lastMsg", message.getMessage());
+                lastMsgObj.put("lastMsgTime", date.getTime());
+
+                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+
                 database.getReference().child("chats")
                         .child(senderRoom)
                         .child("messages")
@@ -120,23 +132,13 @@ public class MessageActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 database.getReference().child("chats")
-                                        .child(receiverUid)
+                                        .child(receiverRoom)
                                         .child("messages")
                                         .child(randomKey)
                                         .setValue(message)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-//                                                Toast.makeText(MessageActivity.this, "Added!", Toast.LENGTH_SHORT).show();
-                                                HashMap<String, Object> lastMsgObj = new HashMap<>();
-                                                lastMsgObj.put("lastMsg", message.getMessage());
-                                                lastMsgObj.put("lastMsgTime", date.getTime());
-
-
-                                                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-                                                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
-
-
                                             }
                                         });
 
@@ -145,10 +147,6 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
     }
 
     //    @SuppressLint("MissingSuperCall")

@@ -3,6 +3,7 @@ package com.example.myapplication.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +58,17 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String lastMsg = snapshot.child("lastMsg")
-                                    .getValue(String.class);
-                            long time = snapshot.child("lastMsgTime").getValue(Long.class);
+                            try {
+                                String lastMsg = snapshot.child("lastMsg").getValue(String.class);
+                                long time = snapshot.child("lastMsgTime").getValue(Long.class);
 
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-                            holder.binding.lastMsg.setText(lastMsg);
-                            holder.binding.lastMsgTime.setText(dateFormat.format(new Date(time)));
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+                                holder.binding.lastMsg.setText(lastMsg);
+                                holder.binding.lastMsgTime.setText(dateFormat.format(new Date(time)));
+                            } catch (Exception err){
+                                Log.d("123456", err.getMessage());
+                            }
                         } else {
-
                             holder.binding.lastMsg.setText("Tap to chat");
                         }
                     }
