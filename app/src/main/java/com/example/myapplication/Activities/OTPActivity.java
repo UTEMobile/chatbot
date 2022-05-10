@@ -1,15 +1,16 @@
 package com.example.myapplication.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityOtpactivityBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mukesh.OnOtpCompletionListener;
 
 import java.util.concurrent.TimeUnit;
@@ -30,10 +35,13 @@ public class OTPActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressDialog dialog;
 
+    FirebaseDatabase database;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         binding = ActivityOtpactivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -88,22 +96,52 @@ public class OTPActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(OTPActivity.this, SetupProfileActivity.class);
-                            startActivity(intent);
-                            finishAffinity();
+                            database = FirebaseDatabase.getInstance();
+                            database.getReference().child("users").child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Intent intent = new Intent(OTPActivity.this, SetupProfileActivity.class);
 
-                        } else {
-                            Toast.makeText(OTPActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
-                        }
+                                    if(dataSnapshot.exists()) {
+                                        //Key exists
+                                        intent = new Intent(OTPActivity.this, HomeActivity.class);
+
+                                    } else {
+                                        //Key does not exist
+                                    }
+
+                                    Log.d("123456", dataSnapshot.toString());
+
+                                    startActivity(intent);
+                                    finishAffinity();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            }
+                        );
+
+//                            if (database.getReference().child("users").child(auth.getUid()).get("name") != null){}
+
+
+                    } else
+
+                    {
+                        Toast.makeText(OTPActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
                     }
-                });
-            }
-        });
+                }
+            });
+        }
+    });
 
 //        Show ProgressDialog when sending OTP SMS
-        dialog = new ProgressDialog(this);
+    dialog =new
+
+    ProgressDialog(this);
         dialog.setMessage("Sending OTP...");
         dialog.setCancelable(false);
         dialog.show();
-    }
+}
 }
