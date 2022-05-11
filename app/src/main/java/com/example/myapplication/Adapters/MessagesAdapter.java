@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.Models.Message;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ItemReceiveBinding;
@@ -25,11 +26,12 @@ import java.util.concurrent.BlockingDeque;
 
 public class MessagesAdapter extends RecyclerView.Adapter {
 
-    public MessagesAdapter(Context context, ArrayList<Message> messages, String senderRoom, String receiverRoom) {
+    public MessagesAdapter(Context context, ArrayList<Message> messages, String senderRoom, String receiverRoom, String profileImage) {
         this.context = context;
         this.messages = messages;
         this.senderRoom = senderRoom;
         this.receiverRoom = receiverRoom;
+        this.profileImage = profileImage;
     }
 
     Context context;
@@ -37,7 +39,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
     final int ITEM_SENT = 1;
     final int ITEM_RECEIVE = 2;
-
+    String profileImage;
     String senderRoom;
     String receiverRoom;
 
@@ -57,7 +59,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         Message message = messages.get(position);
-        if(FirebaseAuth.getInstance().getUid().equals(message.getSenderId())) {
+        if (FirebaseAuth.getInstance().getUid().equals(message.getSenderId())) {
             return ITEM_SENT;
         } else {
             return ITEM_RECEIVE;
@@ -67,6 +69,8 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
+
+
         int reactions[] = new int[]{
                 R.drawable.ic_fb_like,
                 R.drawable.ic_fb_love,
@@ -115,8 +119,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
 
             viewHolder.binding.message.setText(message.getMessage());
 
-            if (message.getFeeling()>=0){
-//                message.setFeeling(reactions[(int) message.getFeeling()]);
+            if (message.getFeeling() >= 0 && message.getFeeling() < 6) {
                 viewHolder.binding.feeling.setImageResource(reactions[message.getFeeling()]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
@@ -126,11 +129,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         } else {
 
             ReceiverViewHolder viewHolder = (ReceiverViewHolder) holder;
-
             viewHolder.binding.message.setText(message.getMessage());
-
-            Log.d("123456", message.getMessage());
-
             viewHolder.binding.message.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -138,14 +137,22 @@ public class MessagesAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
-
-            if (message.getFeeling()>=0){
+//
+            Log.d("123456", Integer.toString(message.getFeeling()));
+            if (message.getFeeling() >= 0 && message.getFeeling() < 6) {
                 message.setFeeling(reactions[(int) message.getFeeling()]);
                 viewHolder.binding.feeling.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.binding.feeling.setVisibility(View.GONE);
             }
+
+
+            Glide.with(context).load(profileImage)
+                    .placeholder(R.drawable.avatar)
+                    .into(viewHolder.binding.profileImage
+                    );
         }
+
     }
 
     @Override
