@@ -24,12 +24,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -39,6 +52,11 @@ public class MessageActivity extends AppCompatActivity {
     String senderRoom, receiverRoom;
     FirebaseDatabase database;
     int countMessage = 0;
+    String url_botAPI = "http://192.168.1.79:5000/";
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+    String receiverUid;
+    JSONObject json = new JSONObject();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +75,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
             String name = getIntent().getStringExtra("name");
-            String receiverUid = getIntent().getStringExtra("uid");
+            receiverUid = getIntent().getStringExtra("uid");
             String profileImage = getIntent().getStringExtra("profileImage");
             String senderUid = FirebaseAuth.getInstance().getUid();
 
@@ -132,6 +150,42 @@ public class MessageActivity extends AppCompatActivity {
                     }
 
 
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    RequestBody body = RequestBody.create(JSON, json.toString());
+                    Request request = new Request.Builder()
+                            .url(url_botAPI+"chat")
+                            .post(body)
+                            .build();
+
+                    okHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        // called if server is unreachable
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MessageActivity.this, "server down", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        @Override
+                        // called if we get a
+                        // response from the server
+                        public void onResponse(
+                                @NotNull Call call,
+                                @NotNull Response response)
+                                throws IOException {
+                            try {
+                                JSONObject jsonRes = new JSONObject(response.body().string());
+                                final String req = jsonRes.getString("res");
+                                sendMessFromBot(req);
+//                            System.out.println(req);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                     Date date = new Date();
                     Message message = new Message(messageTxt, senderUid, date.getTime());
 
@@ -176,6 +230,53 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
+    void sendMessFromBot(String mess){
+        String messageTxt = mess;
+
+        if (messageTxt.equals("")) {
+            Toast.makeText(MessageActivity.this, "Empty message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        Date date = new Date();
+        Message message = new Message(messageTxt, receiverUid, date.getTime());
+
+//        binding.messageBox.setText("");
+
+        String randomKey = database.getReference().push().getKey();
+
+        HashMap<String, Object> lastMsgObj = new HashMap<>();
+        lastMsgObj.put("lastMsg", message.getMessage());
+        lastMsgObj.put("lastMsgTime", date.getTime());
+
+        database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+        database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+
+        database.getReference().child("chats")
+                .child(receiverRoom)
+                .child("messages")
+                .child(randomKey)
+                .setValue(message)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        database.getReference().child("chats")
+                                .child(senderRoom)
+                                .child("messages")
+                                .child(randomKey)
+                                .setValue(message)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                    }
+                                });
+
+                    }
+                });
+
+    }
     //    @SuppressLint("MissingSuperCall")
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
