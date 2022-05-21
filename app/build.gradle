@@ -65,5 +65,5 @@ dependencies {
 
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 
-
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 }
