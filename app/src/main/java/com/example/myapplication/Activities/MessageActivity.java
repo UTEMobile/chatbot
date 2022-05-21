@@ -1,5 +1,7 @@
 package com.example.myapplication.Activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.Adapters.MessagesAdapter;
 import com.example.myapplication.Models.Message;
 import com.example.myapplication.R;
@@ -21,10 +24,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -33,127 +51,232 @@ public class MessageActivity extends AppCompatActivity {
     ArrayList<Message> messages;
     String senderRoom, receiverRoom;
     FirebaseDatabase database;
+    int countMessage = 0;
+    String url_botAPI = "http://192.168.1.79:5000/";
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+    String receiverUid;
+    JSONObject json = new JSONObject();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMessageBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
+        try {
+
+            super.onCreate(savedInstanceState);
+            binding = ActivityMessageBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
 //        setSupportActionBar(binding.toolbar);
 
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+
+
+            String name = getIntent().getStringExtra("name");
+            receiverUid = getIntent().getStringExtra("uid");
+            String profileImage = getIntent().getStringExtra("profileImage");
+            String senderUid = FirebaseAuth.getInstance().getUid();
+
+            binding.name.setText(name);
+
+            senderRoom = senderUid + receiverUid;
+            receiverRoom = receiverUid + senderUid;
+            database = FirebaseDatabase.getInstance();
+
+            messages = new ArrayList<>();
+            adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom, profileImage);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+            Glide.with(this).load(profileImage)
+                    .placeholder(R.drawable.avatar)
+                    .into(binding.profileImage);
+
+
+//            URL url = new URL(profileImage);
+//            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//            binding.profileImage.setImageBitmap(bmp);
+
+
+            binding.recyclerView.setLayoutManager(linearLayoutManager);
+            binding.recyclerView.setAdapter(adapter);
+
+            database.getReference().child("chats")
+                    .child(senderRoom)
+                    .child("messages")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            messages.clear();
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                Message message = snapshot1.getValue(Message.class);
+                                message.setMessageId(snapshot1.getKey());
+                                messages.add(message);
+                            }
+
+                            if (messages.size() != countMessage) {
+                                binding.recyclerView.scrollToPosition(messages.size() - 1);
+                                countMessage = messages.size();
+
+                            }
+                            adapter.notifyDataSetChanged();
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+            binding.backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+
+            binding.sendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String messageTxt = binding.messageBox.getText().toString().trim();
+
+                    if (messageTxt.equals("")) {
+                        Toast.makeText(MessageActivity.this, "Empty message", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    RequestBody body = RequestBody.create(JSON, json.toString());
+                    Request request = new Request.Builder()
+                            .url(url_botAPI+"chat")
+                            .post(body)
+                            .build();
+
+                    okHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        // called if server is unreachable
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MessageActivity.this, "server down", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        @Override
+                        // called if we get a
+                        // response from the server
+                        public void onResponse(
+                                @NotNull Call call,
+                                @NotNull Response response)
+                                throws IOException {
+                            try {
+                                JSONObject jsonRes = new JSONObject(response.body().string());
+                                final String req = jsonRes.getString("res");
+                                sendMessFromBot(req);
+//                            System.out.println(req);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    Date date = new Date();
+                    Message message = new Message(messageTxt, senderUid, date.getTime());
+
+                    binding.messageBox.setText("");
+
+                    String randomKey = database.getReference().push().getKey();
+
+                    HashMap<String, Object> lastMsgObj = new HashMap<>();
+                    lastMsgObj.put("lastMsg", message.getMessage());
+                    lastMsgObj.put("lastMsgTime", date.getTime());
+
+                    database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+                    database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+
+                    database.getReference().child("chats")
+                            .child(senderRoom)
+                            .child("messages")
+                            .child(randomKey)
+                            .setValue(message)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    database.getReference().child("chats")
+                                            .child(receiverRoom)
+                                            .child("messages")
+                                            .child(randomKey)
+                                            .setValue(message)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                }
+                                            });
+
+                                }
+                            });
+
+                }
+            });
+        } catch (Exception err){
+            Log.d("123456", err.toString());
+        }
+    }
+
+    void sendMessFromBot(String mess){
+        String messageTxt = mess;
+
+        if (messageTxt.equals("")) {
+            Toast.makeText(MessageActivity.this, "Empty message", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
+        Date date = new Date();
+        Message message = new Message(messageTxt, receiverUid, date.getTime());
 
+//        binding.messageBox.setText("");
 
+        String randomKey = database.getReference().push().getKey();
 
-        String name = getIntent().getStringExtra("name");
-        String receiverUid = getIntent().getStringExtra("uid");
-        String senderUid = FirebaseAuth.getInstance().getUid();
+        HashMap<String, Object> lastMsgObj = new HashMap<>();
+        lastMsgObj.put("lastMsg", message.getMessage());
+        lastMsgObj.put("lastMsgTime", date.getTime());
 
-        binding.name.setText(name);
-
-        senderRoom = senderUid + receiverUid;
-        receiverRoom = receiverUid + senderUid;
-        database = FirebaseDatabase.getInstance();
-
-        messages = new ArrayList<>();
-        adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-
-
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.setAdapter(adapter);
+        database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+        database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
 
         database.getReference().child("chats")
-                .child(senderRoom)
+                .child(receiverRoom)
                 .child("messages")
-                .addValueEventListener(new ValueEventListener() {
+                .child(randomKey)
+                .setValue(message)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        messages.clear();
-                        for(DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            Message message = snapshot1.getValue(Message.class);
-                            message.setMessageId(snapshot1.getKey());
-                            messages.add(message);
-                        }
-
-                        adapter.notifyDataSetChanged();
-
-                        Log.d("123456", Integer.toString(messages.size()));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onSuccess(Void unused) {
+                        database.getReference().child("chats")
+                                .child(senderRoom)
+                                .child("messages")
+                                .child(randomKey)
+                                .setValue(message)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                    }
+                                });
 
                     }
                 });
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        binding.sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String messageTxt = binding.messageBox.getText().toString().trim();
-
-                if (messageTxt.equals("")) {
-                    Toast.makeText(MessageActivity.this, "Empty message", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                Date date = new Date();
-                Message message = new Message(messageTxt, senderUid, date.getTime());
-
-                binding.messageBox.setText("");
-
-                String randomKey = database.getReference().push().getKey();
-
-                HashMap<String, Object> lastMsgObj = new HashMap<>();
-                lastMsgObj.put("lastMsg", message.getMessage());
-                lastMsgObj.put("lastMsgTime", date.getTime());
-
-                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
-
-
-                database.getReference().child("chats")
-                        .child(senderRoom)
-                        .child("messages")
-                        .child(randomKey)
-                        .setValue(message)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                database.getReference().child("chats")
-                                        .child(receiverRoom)
-                                        .child("messages")
-                                        .child(randomKey)
-                                        .setValue(message)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                            }
-                                        });
-
-                            }
-                        });
-
-            }
-        });
     }
-
     //    @SuppressLint("MissingSuperCall")
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
