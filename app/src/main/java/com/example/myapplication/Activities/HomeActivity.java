@@ -70,11 +70,32 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         usersAdapter = new UsersAdapter(this, users);
         binding.recyclerView.setAdapter(usersAdapter);
 
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            switch (item.getItemId()) {
+                case R.id.chats:
+
+                    return true;
+                case R.id.teach:
+                    Intent intent = new Intent(getBaseContext(), TeachBotActivity.class);
+                    startActivity(intent);
+                    return true;
+
+            }
+            return false;
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
