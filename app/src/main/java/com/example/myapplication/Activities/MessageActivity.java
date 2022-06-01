@@ -1,10 +1,7 @@
 package com.example.myapplication.Activities;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Adapters.MessagesAdapter;
 import com.example.myapplication.Models.Message;
+import com.example.myapplication.Models.PostJson;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityMessageBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,8 +27,15 @@ import com.google.firebase.database.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,8 +58,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseDatabase database;
     int countMessage = 0;
     String url_botAPI = "http://192.168.1.79:5000/";
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     String receiverUid;
     JSONObject json = new JSONObject();
 
@@ -148,44 +152,12 @@ public class MessageActivity extends AppCompatActivity {
                         Toast.makeText(MessageActivity.this, "Empty message", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-
-                    OkHttpClient okHttpClient = new OkHttpClient();
-                    RequestBody body = RequestBody.create(JSON, json.toString());
-                    Request request = new Request.Builder()
-                            .url(url_botAPI+"chat")
-                            .post(body)
-                            .build();
-
-                    okHttpClient.newCall(request).enqueue(new Callback() {
-                        @Override
-                        // called if server is unreachable
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MessageActivity.this, "server down", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        @Override
-                        // called if we get a
-                        // response from the server
-                        public void onResponse(
-                                @NotNull Call call,
-                                @NotNull Response response)
-                                throws IOException {
-                            try {
-                                JSONObject jsonRes = new JSONObject(response.body().string());
-                                final String req = jsonRes.getString("res");
-                                sendMessFromBot(req);
-//                            System.out.println(req);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
+                    try {
+                        json.put("req",messageTxt);
+                        doPostChat(json);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Date date = new Date();
                     Message message = new Message(messageTxt, senderUid, date.getTime());
 
@@ -229,6 +201,42 @@ public class MessageActivity extends AppCompatActivity {
             Log.d("123456", err.toString());
         }
     }
+
+    void doPostChat(JSONObject json){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, json.toString());
+        Request request = new Request.Builder()
+                .url(url_botAPI+"chat")
+                .post(body)
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            // called if server is unreachable
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MessageActivity.this, "server down", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            @Override
+            // called if we get a
+            // response from the server
+            public void onResponse(
+                    @NotNull Call call,
+                    @NotNull Response response)
+                    throws IOException {
+                try {
+                    JSONObject jsonRes = new JSONObject(response.body().string());
+                    sendMessFromBot(jsonRes.getString("res"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     void sendMessFromBot(String mess){
         String messageTxt = mess;
@@ -275,7 +283,6 @@ public class MessageActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
     //    @SuppressLint("MissingSuperCall")
 //    @Override
