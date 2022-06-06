@@ -110,7 +110,7 @@ public class OTPActivity extends AppCompatActivity {
                                         //Key does not exist
                                     }
 
-                                    Log.d("123456", dataSnapshot.toString());
+//                                    Log.d("123456", dataSnapshot.toString());
 
                                     startActivity(intent);
                                     finishAffinity();

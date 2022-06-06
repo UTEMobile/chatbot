@@ -57,7 +57,8 @@ public class MessageActivity extends AppCompatActivity {
     String senderRoom, receiverRoom;
     FirebaseDatabase database;
     int countMessage = 0;
-    String url_botAPI = "http://192.168.1.79:5000/";
+//    String url_botAPI = "http://35.209.231.238:8080/";
+    String url_botAPI = "https://middlechatbotapi.herokuapp.com/";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     String receiverUid;
     JSONObject json = new JSONObject();
@@ -198,7 +199,7 @@ public class MessageActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception err){
-            Log.d("123456", err.toString());
+            err.printStackTrace();
         }
     }
 
